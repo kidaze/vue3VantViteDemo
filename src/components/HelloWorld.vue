@@ -3,6 +3,8 @@ import { ref } from "vue";
 
 export default {
   setup() {
+    // 校验手机号
+    const pattern = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
     //  popUp登录框状态
     const show = ref(false);
     //  Dialog框状态
@@ -11,6 +13,8 @@ export default {
       show.value = true;
     };
     // Dialog框单选值状态
+    const valueTel = ref("");
+    const sms = ref("");
     const checked = ref("1");
     const checked2 = ref("3");
     return {
@@ -18,7 +22,10 @@ export default {
       showDialog,
       showPopup,
       checked,
-      checked2
+      checked2,
+      pattern,
+      valueTel,
+      sms,
     };
   },
 };
@@ -58,41 +65,44 @@ export default {
 
     <van-popup v-model:show="show" position="bottom">
       <div class="logInTitle">登录</div>
-      <div class="popUpDiv">
-        <div class="popUpItem">
-          <van-field
-            v-model="value2"
-            clearable
-            left-icon="phone-o"
-            placeholder="请输入您已注册的手机号"
-          />
-        </div>
-        <div class="popUpItem">
-          <van-field
-            v-model="sms"
-            left-icon="edit"
-            center
-            clearable
-            placeholder="请输入验证码"
-          >
-            <template #button>
-              <van-button size="small" color="#941E23">获取验证码</van-button>
-            </template>
-          </van-field>
-        </div>
-        <div class="popUpItem">
-          <router-link to="/register">
-            <van-button color="#941E23" size="large">登录</van-button>
-          </router-link>
-        </div>
-        <div class="popUpItem">
-          <van-button color="#C19178" size="large">新用户注册</van-button>
-        </div>
+      <van-form>
+        <div class="popUpDiv">
+          <div class="popUpItem">
+            <van-field
+              v-model="valueTel"
+              name=""
+              :rules="[{ pattern, message: '请输入正确的手机号' }]"
+              left-icon="phone-o"
+              placeholder="请输入您已注册的手机号"
+            />
+          </div>
+          <div class="popUpItem">
+            <van-field
+              v-model="sms"
+              left-icon="edit"
+              center
+              clearable
+              placeholder="请输入验证码"
+            >
+              <template #button>
+                <van-button size="small" color="#941E23">获取验证码</van-button>
+              </template>
+            </van-field>
+          </div>
+          <div class="popUpItem">
+            <router-link to="/register">
+              <van-button color="#941E23" size="large">登录</van-button>
+            </router-link>
+          </div>
+          <div class="popUpItem">
+            <van-button color="#C19178" size="large">新用户注册</van-button>
+          </div>
 
-        <div class="footer">
-          <img src="../assets/homepage/horseLogo.png" />
+          <div class="footer">
+            <img src="../assets/homepage/horseLogo.png" />
+          </div>
         </div>
-      </div>
+      </van-form>
     </van-popup>
 
     <van-dialog v-model:show="showDialog">
@@ -106,9 +116,7 @@ export default {
         </template>
       </van-field>
       <div class="dialogText">您的参会方式</div>
-      <van-field
-        name="radio"
-      >
+      <van-field name="radio">
         <template #input>
           <van-radio-group v-model="checked2" direction="horizontal">
             <van-radio name="3" checked-color="#941E23">线上</van-radio>
@@ -133,7 +141,7 @@ export default {
   padding-top: 5vh;
 }
 
-.dialogText{
+.dialogText {
   width: 76vw;
   margin: 3vw auto;
 }
