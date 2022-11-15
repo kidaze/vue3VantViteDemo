@@ -4,6 +4,7 @@
 </script>
 
 <template>
+  <!-- 路由view -->
   <router-view></router-view>
 </template>
 

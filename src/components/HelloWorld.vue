@@ -1,16 +1,24 @@
 <script>
 import { ref } from "vue";
-import { Popup } from "vant";
 
 export default {
   setup() {
+    //  popUp登录框状态
     const show = ref(false);
+    //  Dialog框状态
+    const showDialog = ref(true);
     const showPopup = () => {
       show.value = true;
     };
+    // Dialog框单选值状态
+    const checked = ref("1");
+    const checked2 = ref("3");
     return {
       show,
+      showDialog,
       showPopup,
+      checked,
+      checked2
     };
   },
 };
@@ -49,7 +57,7 @@ export default {
     </div>
 
     <van-popup v-model:show="show" position="bottom">
-      <div class="logInTitle"></div>
+      <div class="logInTitle">登录</div>
       <div class="popUpDiv">
         <div class="popUpItem">
           <van-field
@@ -86,6 +94,29 @@ export default {
         </div>
       </div>
     </van-popup>
+
+    <van-dialog v-model:show="showDialog">
+      <div class="dialogText">您是否有意向参加2023年1月6日-8日第五届中国呼吸发展大会</div>
+      <van-field name="radio">
+        <template #input>
+          <van-radio-group v-model="checked" direction="horizontal">
+            <van-radio name="1" checked-color="#941E23">是</van-radio>
+            <van-radio name="2" checked-color="#941E23">否</van-radio>
+          </van-radio-group>
+        </template>
+      </van-field>
+      <div class="dialogText">您的参会方式</div>
+      <van-field
+        name="radio"
+      >
+        <template #input>
+          <van-radio-group v-model="checked2" direction="horizontal">
+            <van-radio name="3" checked-color="#941E23">线上</van-radio>
+            <van-radio name="4" checked-color="#941E23">线下</van-radio>
+          </van-radio-group>
+        </template>
+      </van-field>
+    </van-dialog>
   </div>
 </template>
 
@@ -102,7 +133,21 @@ export default {
   padding-top: 5vh;
 }
 
-.popUpItem{
+.dialogText{
+  width: 76vw;
+  margin: 3vw auto;
+}
+
+.logInTitle {
+  width: 95vw;
+  margin: 0 auto;
+  color: #941e23;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 5vw;
+}
+
+.popUpItem {
   width: 95vw;
   margin: 0 auto;
   margin-top: 3vh;
@@ -122,7 +167,7 @@ export default {
 .gridItem {
   width: 96vw;
   margin: 0 auto;
-  margin-top: 3vh;
+  margin-top: 6vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

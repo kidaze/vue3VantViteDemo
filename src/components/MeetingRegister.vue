@@ -1,6 +1,7 @@
 <script>
 import { ref } from "vue";
 import { areaList } from "@vant/area-data";
+import { Dialog } from "vant"
 export default {
   setup() {
     const result = ref("");
@@ -9,6 +10,8 @@ export default {
 
     const checked = ref("1");
     const checked2 = ref("3");
+
+    const checkedBox = ref(false);
 
     const showPicker = ref(false);
     const showPicker2 = ref(false);
@@ -30,6 +33,18 @@ export default {
       result.value = value;
       showPicker.value = false;
     };
+
+    const message = ``
+
+    const popUpWindow = ()=>{
+      Dialog.alert({
+        title: '隐私政策',
+        messageAlign: 'left',
+        message: '1、用户信息公开情况说明\n2、隐私权政策适用范围\n3、咨询公开与共享\n4、COOKIES、档案与WEBBEACON',
+      }).then(() => {
+        // on close
+      });
+    }
     // const onConfirm2 = (value) => {
     //   result2.value = value;
     //   showPicker2.value = false;
@@ -63,6 +78,8 @@ export default {
       onConfirm3,
       showPicker,
       showPicker2,
+      checkedBox,
+      popUpWindow
     };
   },
 };
@@ -84,8 +101,8 @@ export default {
         <van-field name="radio" label="性别">
           <template #input>
             <van-radio-group v-model="checked" direction="horizontal">
-              <van-radio name="1">男</van-radio>
-              <van-radio name="2">女</van-radio>
+              <van-radio name="1" checked-color="#941E23">男</van-radio>
+              <van-radio name="2" checked-color="#941E23">女</van-radio>
             </van-radio-group>
           </template>
         </van-field>
@@ -191,17 +208,29 @@ export default {
         <van-field name="radio" label="参会意向">
           <template #input>
             <van-radio-group v-model="checked2" direction="horizontal">
-              <van-radio name="3">是</van-radio>
-              <van-radio name="4">否</van-radio>
+              <van-radio name="3" checked-color="#941E23">是</van-radio>
+              <van-radio name="4" checked-color="#941E23">否</van-radio>
             </van-radio-group>
           </template>
         </van-field>
+        <van-field name="checkboxGroup">
+          <template #input>
+            <van-checkbox v-model="checkedBox" shape="square" checked-color="#941E23" @click="popUpWindow">请阅读隐私条款内容，同意方可注册</van-checkbox>
+          </template>
+        </van-field>
       </van-cell-group>
+
+      <van-button block color="#941E23" class="btnStyle">注册</van-button>
     </div>
   </div>
 </template>
 
 <style scoped>
+.btnStyle{
+  margin: 2vh auto;
+  width: 90vw;
+}
+
 .body {
   width: 100vw;
   height: 100vh;
@@ -212,6 +241,7 @@ export default {
   border-radius: 1rem;
   background-color: #fff;
   margin-top: -2vh;
+  padding: 2vh 0;
 }
 
 .top {
